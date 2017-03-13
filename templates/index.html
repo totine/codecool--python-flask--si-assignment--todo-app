@@ -1,0 +1,95 @@
+{% extends 'structure.html' %}
+{% block content %}
+<div class= 'card'>
+    <div class="card-content">
+        <h1>To do list</h1>
+    </div>
+    {% for message in get_flashed_messages() %}
+       {{ message }}
+    {% endfor %}
+      <!-- Dropdown Trigger -->
+
+
+
+    <div class="card-tabs">
+                  <a class='dropdown-button btn' href='#' data-activates='sorting'>Drop Me!</a>
+          <!-- Dropdown Structure -->
+  <ul id='sorting' class='dropdown-content'>
+    <li><a href="#!">By priority</a></li>
+    <li><a href="#!">By creation date</a></li>
+    <li class="divider"></li>
+    <li><a href="#!">By due date</a></li>
+  </ul>
+      <ul class="tabs tabs-fixed-width">
+
+        <li class="tab"><a class="active" href="#actual">Actual</a></li>
+        <li class="tab"><a  href="#archived">Archived</a></li>
+      </ul>
+    </div>
+    <div class="card-content grey lighten-4">
+
+    <div id="actual">
+
+        <ul class="collapsible collection" >
+        {% for item in todo_list %}
+            <li class="collection-item avatar">
+            <div class="'collapsible-header">
+            <a href={{ url_for('toggle', todo_id=item.id) }}>
+                <i class="large material-icons circle {% if item.status == 0 %}grey">schedule{% else %}green">done{% endif %}</i>
+            </a>
+
+        <span class="title big">{{ item.name }}</span>
+        <p class="small thin">Priority: {% for i in range(item.priority) %}<i class="tiny material-icons">star</i>{% endfor %}</p></div>
+        {% if item.status == 1 %}<p class="small thin">Completed time: {{ item.last_modify_time }}</p>{% endif %}
+        {% if item.due_date %}
+            <p class="small thin">Due date: {{ item.due_date }}</p>
+        {% endif %}
+        <p class="small thin">Creation time: {{ item.create_date }}</p>
+        <span class="secondary-content">
+            {% if item.status == 1 %}
+                <a href={{ url_for('archive', todo_id=item.id) }}><i class="material-icons">archive</i></a>
+            {% endif %}
+                <a href={{ url_for('edit', todo_id=item.id) }}><i class="material-icons">mode_edit</i></a>
+                <a href={{ url_for('remove', todo_id=item.id) }}><i class="material-icons">delete</i></a>
+        </span>
+        </li>
+    {% endfor %}
+</ul>
+</div>
+        <div id="archived">
+    <ul class="collection">
+{% for item in archive_list %}
+    <li class="collection-item avatar">
+        <a href={{ url_for('toggle', todo_id=item.id) }}">
+            <i class="large material-icons circle {% if item.status == 0 %}grey">schedule{% else %}green">done{% endif %}</i></a>
+
+        <span class="title big">{{ item.name }}</span>
+        <p class="small thin">Priority: {% for i in range(item.priority) %}<i class="tiny material-icons">star</i>{% endfor %}</p>
+        {% if item.status == 1 %}<p class="small thin">Completed time: {{ item.last_modify_time }}</p>{% endif %}
+        <p class="small thin">Due date: {{ item.due_date }}</p>
+        <p class="small thin">Creation time: {{ item.create_date }}</p>
+        <span class="secondary-content">
+            {% if item.status == 1 %}
+                <a href={{ url_for('activate', todo_id=item.id) }}><i class="material-icons">activate</i></a>
+            {% endif %}
+            <a href={{ url_for('edit', todo_id=item.id) }}><i class="material-icons">mode_edit</i></a>
+            <a href={{ url_for('remove', todo_id=item.id) }}><i class="material-icons">delete</i></a>
+        </span>
+        </li>
+    {% endfor %}
+
+</ul>
+        </div>
+    </div>
+</div>
+
+    <div class="fixed-action-btn">
+        <a href="{{ url_for('add') }}" class="btn-floating btn-large red">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+    <script>$(document).ready(function(){
+        $('ul.tabs').tabs();
+        });
+    </script>
+{% endblock %}

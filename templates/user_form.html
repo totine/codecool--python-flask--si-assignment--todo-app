@@ -1,0 +1,25 @@
+{% extends 'structure.html' %}
+{% block content %}
+    <a href={{ url_for('td_list') }}><i class="material-icons">arrow_back</i>Back</a>
+    <fieldset>
+        {% for message in get_flashed_messages() %}
+           {{ message }}
+        {% endfor %}
+    <form method="POST" action={{ action }}>
+        <div class="form-group">
+            <label for="user_name">User name</label>
+            <input type="text" name="user_name"
+                    {% if user %} value={{ user.name }} {% endif %} />
+            <label for="password">Password</label>
+            <input type="password" name="password" />
+            <label for="confirm_password">Confirm password</label>
+            <input type="password" name="confirm_password"/>
+
+        </div>
+        <div>
+            <input class="btn btn-primary" type="reset" value="Reset">
+            <input class="btn btn-primary" type="submit" value={{ submit_title }}>
+        </div>
+    </form>
+        </fieldset>
+{% endblock %}
