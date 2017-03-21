@@ -1,19 +1,33 @@
 {% extends 'structure.html' %}
 {% block content %}
-    <div class="container">
-        <h1>Please login</h1>
-        <br>
-        <form action="" method="post">
-            {% for message in get_flashed_messages() %}
-                {{ message }}
-            {% endfor %}
-            <input type="text" placeholder="Username" name="username" value="{{ request.form.username }}" />
-            <input type="password" placeholder="Password" name="password" value="{{ request.form.password }}" />
-            <input class="btn btn-default" type="submit" value="Login" />
-        </form>
-        {% if error %}
-            <p class="error"><strong>Error:</strong> {{ error }}</p>
-        {% endif %}
+    <div class="col s7 offset-s3">
+        <div class="card">
+            <div class="card-content">
+                <div class="card-title indigo-text">
+                    <h2>Please login</h2>
+                </div>
+                {% for message in get_flashed_messages() %}
+                    {{ message }}
+                {% endfor %}
+                <fieldset>
+                    <form action="" method="post">
+                        <label for="username">Username or e-mail</label>
+                        <input type="text" placeholder="Username or email" name="username"
+                               value="{{ request.form.username }}" required/>
+                        <label for="password">Password</label>
+                        <input type="password" placeholder="Password" name="password"
+                               value="{{ request.form.password }}"/>
+                        <div class="card-action">
+                            <input class="btn btn-flat left" type="reset" value="Reset">
+                            <input class="btn btn-default right" type="submit" value="Login"/>
+                        </div>
+                    </form>
+                </fieldset>
+                {% if error %}
+                    <p class="error"><strong>Error:</strong> {{ error }}</p>
+                {% endif %}
+            </div>
+        </div>
         Don't have account? <a href={{ (url_for('signup')) }}>Sign up</a>
     </div>
 {% endblock %}

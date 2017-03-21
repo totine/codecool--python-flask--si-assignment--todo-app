@@ -1,0 +1,35 @@
+{% extends 'structure.html' %}
+{% block content %}
+    <div class="col s10 offset-s1 ">
+        <div class='card indigo white-text'>
+            <div class="card-content">
+                <h1>Admin panel</h1>
+            </div>
+        </div>
+        {% for message in get_flashed_messages() %}
+            {{ message.decode('utf-8') }}
+        {% endfor %}
+        <div class="card">
+            <div class="card-tabs">
+                <ul class="tabs tabs-fixed-width">
+                    <li class="tab"><a class="active" href="#userslist">Users list</a></li>
+                    <li class="tab"><a href="#options">Options</a></li>
+                    <li class="tab"><a href="#statistics">Statistics</a></li>
+                </ul>
+            </div>
+            <div id="userslist" class="card-content">
+                {% include "includes/users_list.html" %}
+            </div>
+            <div class="card-content" id="options">
+                Place for options
+            </div>
+            <div id="statistics" class="card-content">
+                Place for statistics
+            </div>
+        </div>
+    </div>
+    <script>$(document).ready(function () {
+        $('ul.tabs').tabs();
+    });
+    </script>
+{% endblock %}

@@ -1,0 +1,58 @@
+<li>
+    <div class="collapsible-header">
+        <div class="toggle left">
+            <a href={{ url_for('toggle', todo_id=item.id) }}>
+                <i class=" large material-icons white-text circle {% if item.status == 0 %}grey">check_box_outline_blank{% else %}
+                    green">done{% endif %}</i>
+            </a>
+        </div>
+        <span class="secondary-content">
+            <a href={{ url_for('show_todo', item_id=item.id) }}>
+                <i class="material-icons">info</i>
+            </a>
+            {% if item.status == 1 and not item.is_archived %}
+                <a href={{ url_for('archive', todo_id=item.id) }}>
+                    <i class="material-icons">archive</i>
+                </a>
+            {% endif %}
+            {% if item.status == 1 and item.is_archived %}
+                <a href={{ url_for('activate', todo_id=item.id) }}>
+                    <i class="material-icons">refresh</i>
+                </a>
+            {% endif %}
+            <a href={{ url_for('edit', todo_id=item.id) }}>
+                <i class="material-icons">mode_edit</i>
+            </a>
+            <a href={{ url_for('remove', todo_id=item.id) }}>
+                <i class="material-icons">delete</i>
+            </a>
+        </span>
+        <div class="item_box">
+            <a href={{ url_for('show_todo', item_id=item.id) }}>{{ item.name }}</a>
+            <p>Priority:
+                {% for i in range(item.priority) %}
+                    <i class="tiny material-icons">star</i>
+                {% endfor %}
+            </p>
+            <p>
+                {% if item.due_date %}
+                    Due date: {{ item.due_date }}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <div class="collapsible-body">
+        <p>
+            {% if item.status == 1 %}
+                Completed time: {{ item.last_modify_time }}<br>
+            {% endif %}
+        </p>
+        <p>
+            Creation time: {{ item.create_date }}
+        </p>
+        <p>
+            Description: {{ item.description }}
+        </p>
+    </div>
+</li>
+

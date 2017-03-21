@@ -5500,10 +5500,15 @@ button.btn-floating {
   width: 2rem;
   font-size: 1.6rem;
   line-height: 3rem;
-  display: block;
-  float: left;
+  display: inline;
+  /*float: left;*/
   text-align: center;
-  margin-right: 1rem;
+  /*margin-right: 1rem;*/
+}
+
+.collapsible-header p {
+    margin-bottom: 0px;
+    line-height: 100%;
 }
 
 .collapsible-body {
@@ -8580,3 +8585,53 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
     margin-bottom: 5em;
   }
 }
+
+.toggle {
+
+    width: 15%;
+    padding-bottom: 2000px;
+    margin-bottom: -2000px;
+    margin-top: 10px;
+
+
+}
+.toggle a {
+
+  width: 42px;
+  height: 42px;
+
+
+}
+
+.toggle i {
+    font-size: 24px;
+  width: 42px;
+  height: 42px;
+ overflow: hidden;
+  display: inline-block;
+  vertical-align: middle;
+
+}
+
+
+.item_box {
+    width: 50%;
+
+    overflow: hidden;
+    padding-bottom: 2000px;
+    margin-bottom: -2000px;
+}
+
+.item_box a {
+  font-size: 1.2rem;
+}
+
+.item_box p {
+  font-size: 1rem;
+  margin-top: 0px;
+}
+
+.item_box i {
+  font-size: 1rem;
+}
+

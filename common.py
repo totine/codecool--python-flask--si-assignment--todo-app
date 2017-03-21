@@ -16,6 +16,17 @@ def login_required(f):
     return wrap
 
 
+def admin_only(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if 'is_admin' in session and session['is_admin']:
+            return f(*args, **kwargs)
+        else:
+            flash('Access denied.')
+            return redirect('/')
+    return wrap
+
+
 def get_db():
     db = getattr(g, '_database', None)
     if not db:

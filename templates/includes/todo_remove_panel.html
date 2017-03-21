@@ -1,0 +1,4 @@
+{% extends 'includes/remove_card.html' %}
+{% block remove_text %}Remove item{% endblock %}
+{% block remove_url %}{{ url_for('remove', todo_id=item.id) }}{% endblock %}
+{% block remove_submit %}Item{% endblock %}

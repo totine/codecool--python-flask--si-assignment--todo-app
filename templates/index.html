@@ -1,95 +1,90 @@
 {% extends 'structure.html' %}
 {% block content %}
-<div class= 'card'>
-    <div class="card-content">
-        <h1>To do list</h1>
-    </div>
-    {% for message in get_flashed_messages() %}
-       {{ message }}
-    {% endfor %}
-      <!-- Dropdown Trigger -->
+    <div class="col s7 offset-s2">
+        <div class='card indigo white-text'>
+            <div class="card-content">
+                <h1>
+                    My ToDo list
+                </h1>
+            </div>
+        </div>
+        <div>
+            {% for message in get_flashed_messages() %}
+                {{ message.decode('utf-8') }}
+            {% endfor %}
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <div class="card-tabs">
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab"><a class="active" href="#actual">Actual</a></li>
+                        <li class="tab"><a href="#archived">Archived</a></li>
+                    </ul>
+                </div>
+                {% if todo_list %}
+                    <label>Choose sort type</label>
+                    <form name="sort_types" method="POST" action={{ url_for('td_list') }}>
+                        <select class="browser-default" name="sort" onchange="this.form.submit()">
+                            <option value="priority" {% if session['sort_type'] == 'priority' %}selected{% endif %}>
+                                Priority
+                            </option>
+                            <option value="name" {% if session['sort_type'] == 'name' %}selected{% endif %}>
+                                Name
+                            </option>
+                            <option value="due date" {% if session['sort_type'] == 'due date' %}selected{% endif %}>
+                                Due date
+                            </option>
+                            <option value="create date" {% if session['sort_type'] == 'create date' %}selected{% endif %}>
+                                Create date
+                            </option>
+                            <option value="status" {% if session['sort_type'] == 'status' %}selected{% endif %}>
+                                Status
+                            </option>
+                        </select>
+                               <button class="waves-effect waves-light btn right" onclick="this.form.submit()"><i class="material-icons left">
+                                   {% if session['sort_direct'] == 'asc' %}arrow_upward{% else %}arrow_downward{% endif %}</i>
+                               </button>
 
-
-
-    <div class="card-tabs">
-                  <a class='dropdown-button btn' href='#' data-activates='sorting'>Drop Me!</a>
-          <!-- Dropdown Structure -->
-  <ul id='sorting' class='dropdown-content'>
-    <li><a href="#!">By priority</a></li>
-    <li><a href="#!">By creation date</a></li>
-    <li class="divider"></li>
-    <li><a href="#!">By due date</a></li>
-  </ul>
-      <ul class="tabs tabs-fixed-width">
-
-        <li class="tab"><a class="active" href="#actual">Actual</a></li>
-        <li class="tab"><a  href="#archived">Archived</a></li>
-      </ul>
-    </div>
-    <div class="card-content grey lighten-4">
-
-    <div id="actual">
-
-        <ul class="collapsible collection" >
-        {% for item in todo_list %}
-            <li class="collection-item avatar">
-            <div class="'collapsible-header">
-            <a href={{ url_for('toggle', todo_id=item.id) }}>
-                <i class="large material-icons circle {% if item.status == 0 %}grey">schedule{% else %}green">done{% endif %}</i>
-            </a>
-
-        <span class="title big">{{ item.name }}</span>
-        <p class="small thin">Priority: {% for i in range(item.priority) %}<i class="tiny material-icons">star</i>{% endfor %}</p></div>
-        {% if item.status == 1 %}<p class="small thin">Completed time: {{ item.last_modify_time }}</p>{% endif %}
-        {% if item.due_date %}
-            <p class="small thin">Due date: {{ item.due_date }}</p>
-        {% endif %}
-        <p class="small thin">Creation time: {{ item.create_date }}</p>
-        <span class="secondary-content">
-            {% if item.status == 1 %}
-                <a href={{ url_for('archive', todo_id=item.id) }}><i class="material-icons">archive</i></a>
-            {% endif %}
-                <a href={{ url_for('edit', todo_id=item.id) }}><i class="material-icons">mode_edit</i></a>
-                <a href={{ url_for('remove', todo_id=item.id) }}><i class="material-icons">delete</i></a>
-        </span>
-        </li>
-    {% endfor %}
-</ul>
-</div>
-        <div id="archived">
-    <ul class="collection">
-{% for item in archive_list %}
-    <li class="collection-item avatar">
-        <a href={{ url_for('toggle', todo_id=item.id) }}">
-            <i class="large material-icons circle {% if item.status == 0 %}grey">schedule{% else %}green">done{% endif %}</i></a>
-
-        <span class="title big">{{ item.name }}</span>
-        <p class="small thin">Priority: {% for i in range(item.priority) %}<i class="tiny material-icons">star</i>{% endfor %}</p>
-        {% if item.status == 1 %}<p class="small thin">Completed time: {{ item.last_modify_time }}</p>{% endif %}
-        <p class="small thin">Due date: {{ item.due_date }}</p>
-        <p class="small thin">Creation time: {{ item.create_date }}</p>
-        <span class="secondary-content">
-            {% if item.status == 1 %}
-                <a href={{ url_for('activate', todo_id=item.id) }}><i class="material-icons">activate</i></a>
-            {% endif %}
-            <a href={{ url_for('edit', todo_id=item.id) }}><i class="material-icons">mode_edit</i></a>
-            <a href={{ url_for('remove', todo_id=item.id) }}><i class="material-icons">delete</i></a>
-        </span>
-        </li>
-    {% endfor %}
-
-</ul>
+                    </form>
+                {% endif %}
+            </div>
+            <div class="card-content" id="actual">
+                {% if not todo_list %}
+                    There is no todo item. You can <a href={{ url_for('add') }}>add</a> something
+                {% else %}
+                    <ul class="collapsible popout" data-collapsible="accordion">
+                        {% for item in todo_list %}
+                            {% include 'includes/todo_list_scheme.html' %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="card-content" id="archived">
+                {% if not archive_list %}
+                    There is no todo item in archive.
+                {% else %}
+                    <ul class="collapsible popout" data-collapsible="accordion">
+                    {% for item in archive_list %}
+                        {% include 'includes/todo_list_scheme.html' %}
+                    {% endfor %}
+                {% endif %}
+                </ul>
+            </div>
         </div>
     </div>
-</div>
-
     <div class="fixed-action-btn">
         <a href="{{ url_for('add') }}" class="btn-floating btn-large red">
             <i class="material-icons">add</i>
         </a>
     </div>
-    <script>$(document).ready(function(){
+<script>
+    $(document).ready(function () {
         $('ul.tabs').tabs();
-        });
-    </script>
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('.collapsible').collapsible();
+    });
+</script>
 {% endblock %}

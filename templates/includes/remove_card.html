@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="card-content">
+        <div class="card-title indigo-text">
+            {% block remove_text %}{% endblock %}
+        </div>
+        <div class="card-action">
+            <a class="waves-effect waves-light btn right grey " href={% block remove_url %}{% endblock %}>
+                <i class="material-icons left">remove</i>remove {% block remove_submit %}{% endblock %}</a>
+        </div>
+    </div>
+</div>

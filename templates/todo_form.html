@@ -1,0 +1,77 @@
+{% extends 'structure.html' %}
+{% block content %}
+    <div class="col s7 offset-s2" xmlns="http://www.w3.org/1999/html">
+        {% include 'includes/back_button.html' %}
+        <div class="card-panel indigo white-text">
+            <h2>
+                {% if is_edit %}
+                    Edit {{ item.name }}
+                {% else %}
+                    Add new item
+                {% endif %}
+            </h2>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <fieldset>
+                    {% for message in get_flashed_messages() %}
+                        {{ message.decode('utf-8') }}
+                    {% endfor %}
+                    <form method="POST" action={{ action }}>
+                        <div class="form-group">
+                            <label for="item_name">Item name</label>
+                            <input type="text" name="item_name"
+                                    {% if is_edit %}
+                                        value={{ item.name }}
+                                    {% endif %}
+                            required/>
+                            <label for="priority">Priority</label>
+                            <p class="range-field">
+                                <input type="range" name="priority" min="1" max="5"
+                                    {% if is_edit and item.priority %}
+                                        value={{ item.priority }}
+                                    {% endif %}
+                                />
+                            </p>
+                            <label for="due_date">Due time</label>
+                            <input type="date" name="due_date" class="datepicker"
+                                {% if is_edit and item.due_date %}
+                                    value={{ item.due_date }}
+                                {% endif %}
+                            />
+                            <label for="description">Description</label>
+                            <textarea title="description" name="description" {% if not is_edit or not item.description %}placeholder="Type description here..."></textarea>
+                                {% else %}
+                                   > {{ item.description }}</textarea>
+                                {% endif %}
+
+                            {% if is_edit and not item.is_archived %}
+                                <p>
+                                    <input class="with-gap" name="status" type="radio" value=1 id="done"
+                                        {% if item.status == 1 %}
+                                           checked
+                                        {% endif %}
+                                    />Done
+                                    <label for="done"></label>
+                                    <input class="with-gap" name="status" type="radio" value=0 id="undone"
+                                        {% if item.status == 0 %}
+                                           checked
+                                        {% endif %}
+                                    />Undone
+                                    <label for="undone"></label>
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="card-action">
+                            <input class="btn btn-flat left" type="reset" value="Reset">
+                            <input class="btn btn-primary right" type="submit" value={{ submit_title }}>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+            {% if is_edit %}
+                </div>
+                {% include 'includes/todo_remove_panel.html' %}
+                </div>
+            {% endif %}
+{% endblock %}

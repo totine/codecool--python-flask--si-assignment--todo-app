@@ -1,0 +1,36 @@
+{% extends 'structure.html' %}
+{% block content %}
+    <div class="col s7 offset-s2">
+        {% include 'includes/back_button.html' %}
+        <div class="card indigo white-text">
+            <div class="card-content">
+                <h2>
+                    Confirm user remove
+                </h2>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <fieldset>
+                    <div>
+                        {% for message in get_flashed_messages() %}
+                            {{ message }}
+                        {% endfor %}
+                    </div>
+                    <form method="POST" action={{ url_for('remove_user_confirm', user_id=user_id) }}>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" name="password"/>
+                            <label for="confirm_password">Confirm password</label>
+                            <input type="password" name="confirm_password"/>
+                        </div>
+                        <div class="card-action">
+                            <input class="btn btn-flat left" type="reset" value="Reset">
+                            <input class="btn btn-primary right" type="submit" value="Confirm">
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+{% endblock %}

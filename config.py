@@ -4,7 +4,7 @@ import os
 
 
 class BaseConfig(object):
-    DEBUG = False
+    DEBUG = True
     SECRET_KEY = os.urandom(24)
     DATABASE = 'data/todo.db'
 

@@ -1,25 +1,70 @@
 {% extends 'structure.html' %}
 {% block content %}
-    <a href={{ url_for('td_list') }}><i class="material-icons">arrow_back</i>Back</a>
-    <fieldset>
-        {% for message in get_flashed_messages() %}
-           {{ message }}
-        {% endfor %}
-    <form method="POST" action={{ action }}>
-        <div class="form-group">
-            <label for="user_name">User name</label>
-            <input type="text" name="user_name"
-                    {% if user %} value={{ user.name }} {% endif %} />
-            <label for="password">Password</label>
-            <input type="password" name="password" />
-            <label for="confirm_password">Confirm password</label>
-            <input type="password" name="confirm_password"/>
-
+    <div class="col s7 offset-s2">
+        {% include 'includes/back_button.html' %}
+        <div class="card indigo white-text">
+            <div class="card-content">
+                <h2>
+                    {% if is_edit %}
+                        Edit
+                        {% if user.id != session['user_id'] %}
+                            {{ user.name }}
+                        {% else %}
+                            my profile
+                        {% endif %}
+                    {% else %}
+                        New user
+                    {% endif %}
+                </h2>
+            </div>
         </div>
-        <div>
-            <input class="btn btn-primary" type="reset" value="Reset">
-            <input class="btn btn-primary" type="submit" value={{ submit_title }}>
+        <div class="card">
+            <div class="card-content">
+                <fieldset>
+                    <div>
+                        {% for message in get_flashed_messages() %}
+                            {{ message.decode('utf-8') }}
+                        {% endfor %}
+                    </div>
+                    <form method="POST" action={{ action }}>
+                        <div class="form-group">
+                            <label for="user_name">User name</label>
+                            <input type="text" name="user_name"
+                                {% if user and user.name %}
+                                    value={{ user.name }}
+                                {% endif %}
+                            required />
+                            <label for="email">E-mail</label>
+                            <input type="email" name="email"
+                                {% if not is_edit %}
+                                   required
+                                {% endif %}
+                                {% if user %}
+                                    value="{{ user.email if user.email }}
+                                {% endif %}"
+                            />
+                            <label for="password">Password</label>
+                            <input type="password" name="password" />
+                            <label for="confirm_password">Confirm password</label>
+                            <input type="password" name="confirm_password"/>
+                                {% if is_edit and session['is_admin'] and session['user_id'] != user.id %}
+                                    <input type="checkbox" name="admin" id="admin"
+                                        {% if is_edit and user.is_admin %}
+                                           checked="checked"
+                                        {% endif %}/>
+                                    <label for="admin">Admin status</label>
+                                {% endif %}
+                        </div>
+                        <div class="card-action">
+                            <input class="btn btn-flat left" type="reset" value="Reset">
+                            <input class="btn btn-primary right" type="submit" value={{ submit_title }}>
+                        </div>
+                    </form>
+                </fieldset>
+            </div>
         </div>
-    </form>
-        </fieldset>
+        {% if is_edit %}
+            {% include 'includes/user_remove_panel.html' %}
+        {% endif %}
+    </div>
 {% endblock %}

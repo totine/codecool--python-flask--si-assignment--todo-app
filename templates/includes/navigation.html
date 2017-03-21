@@ -1,0 +1,14 @@
+<nav>
+    <div class="nav-wrapper indigo darken-3">
+        <a class="brand-logo" href="/"><i class="material-icons">home</i> ToDo App</a>
+        {% if session['user_id'] %}
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                {% if session['is_admin'] %}
+                    <li><a href={{ url_for('admin_panel') }}>Admin panel</a></li>
+                {% endif %}
+                <li><a href={{ url_for('show_user', user_id=session['user_id']) }}>My account</a></li>
+                <li><a href={{ url_for('logout') }}>Logout</a></li>
+            </ul>
+        {% endif %}
+    </div>
+</nav>

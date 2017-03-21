@@ -1,0 +1,48 @@
+{% extends 'structure.html' %}
+{% block content %}
+    <div class="col s7 offset-s2">
+    <div>
+        {% for message in get_flashed_messages() %}
+           {{ message.decode('utf-8') }}
+        {% endfor %}
+    </div>
+    {% include 'includes/back_button.html' %}
+        <div class="card indigo white-text">
+            <div class="card-content">
+                <h2>
+                    {% if user.id == session['user_id'] %}
+                        My profile
+                    {% else %}
+                        {{ user.name }} info
+                    {% endif %}
+                </h2>
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-content">
+                <h2 class="card-title indigo-text">User data</h2>
+                <ul class="collection">
+                    <li class="collection-item">Name: <span class="badge">{{ user.name }}</span></li>
+                    <li class="collection-item">E-mail: <span class="badge">{{ user.email }}</span></li>
+                    <li class="collection-item">Registration date: <span class="badge">{{ user.registration_date }}</span></li>
+                </ul>
+                <a class="waves-effect waves-light btn right" href={{ url_for('edit_user', user_id=user.id) }} ><i class="material-icons left">edit</i>Edit data and password</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-title indigo-text">Statistics</h2>
+                <ul class="collection">
+                    <li class="collection-item ">Active todos: <span class="badge">{{ user.active_todos_count }}</span></li>
+
+                    <ul class="collection ">
+                        <li class="collection-item thin">Done: <span class="badge">{{ user.active_todos_done_count }}</span></li>
+                        <li class="collection-item thin">Undone: <span class="badge">{{ user.active_todos_undone_count }}</span></li>
+                    </ul>
+                    <li class="collection-item">Archived todos: <span class="badge">{{ user.archived_todos_count }}</span></li>
+                </ul>
+            </div>
+        </div>
+        {% include 'includes/user_remove_panel.html' %}
+    </div>
+{% endblock %}

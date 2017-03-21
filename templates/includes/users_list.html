@@ -1,0 +1,43 @@
+<table class="highlight">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>E-mail</th>
+        <th>Registration date</th>
+        <th>Active todos</th>
+        <th>Admin</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+        <tr>
+            <td>
+                <a href={{ url_for('show_user', user_id=user.id) }}>{{ user.name }}</a>
+            </td>
+            <td>
+                <a href="mailto://{{ user.email }}">{{ user.email }}</a>
+            </td>
+            <td>
+                {{ user.registration_date }}
+            </td>
+            <td>
+                {{ user.active_todos_count }}
+            </td>
+            <td>
+                {% if user.is_admin %}YES{% endif %}
+            </td>
+            <td>
+                <a href={{ url_for('show_user', user_id=user.id) }}><i class="material-icons">info</i></a>
+                <a href={{ url_for('edit_user', user_id=user.id) }}><i class="material-icons">mode_edit</i></a>
+                <a href={{ url_for('remove_user', user_id=user.id) }}><i class="material-icons">delete</i></a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<div class="fixed-action-btn">
+    <a href="{{ url_for('add_user') }}" class="btn-floating btn-large red">
+        <i class="material-icons">add</i>
+    </a>
+</div>

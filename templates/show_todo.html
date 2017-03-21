@@ -1,0 +1,48 @@
+{% extends 'structure.html' %}
+{% block content %}
+    <div class="col s7 offset-s2">
+        <div>
+            {% for message in get_flashed_messages() %}
+                {{ message.decode('utf-8') }}
+            {% endfor %}
+        </div>
+        {% include 'includes/back_button.html' %}
+        <div class="card indigo white-text">
+            <div class="card-content">
+                <h2>{{ item.name }} info</h2>
+            </div>
+        </div>
+        <div class="card ">
+            <div class="card-content">
+                <h2 class="card-title indigo-text">Item data</h2>
+                <ul class="collection">
+                    <li class="collection-item">Name: <span class="badge">{{ item.name }}</span></li>
+                    <li class="collection-item">Priority: <span class="badge">
+                                        {% for i in range(item.priority) %}
+                    <i class="tiny material-icons">star</i>
+                {% endfor %}
+                    </span></li>
+                    <li class="collection-item">Due date: <span class="badge">{{ item.due_date }}</span></li>
+                    <li class="collection-item">Creation date: <span class="badge">{{ item.create_date }}</span></li>
+                    <li class="collection-item">Status: <span class="badge">{% if item.status == 1 %}Done{% else %}Pending{% endif %}</span></li>
+                    <li class="collection-item">Description: <span class="badge">{{ item.description }}</span></li>
+                </ul>
+                <a class="waves-effect waves-light btn right" href={{ url_for('edit', todo_id=item.id) }}>Edit</a>
+                {% if item.is_archived or item.status == 1 %}<a class="waves-effect waves-light btn left" href=
+                    {% if item.is_archived %}
+                        {{ url_for('activate', todo_id=item.id) }}>Activate</a>
+                    {% else %}
+                        {{ url_for('archive', todo_id=item.id) }}>Archive</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
+        <div class="card">
+            <div class="card-content">
+                <h2 class="card-title indigo-text">History</h2>
+            </div>
+        </div>
+        {% include 'includes/todo_remove_panel.html' %}
+    </div>
+{% endblock %}

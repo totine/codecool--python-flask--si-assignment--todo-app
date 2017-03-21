@@ -28,7 +28,6 @@ class DB:
         cur.execute(query, args)
         db.commit()
 
-
     @classmethod
     def execute_insert_query(cls, db, query, args):
         """Execute insert query and return new record id"""
